@@ -1,18 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component } from '@angular/core';
 import { BreadcrumbService } from 'xng-breadcrumb';
 
 @Component({
   selector: 'app-section-header',
   templateUrl: './section-header.component.html',
-  styleUrl: './section-header.component.scss'
+  styleUrls: ['./section-header.component.scss']
 })
-export class SectionHeaderComponent implements OnInit{
-  breadcrumb$: Observable<any[]>;
+export class SectionHeaderComponent {
 
-  constructor(private bcService: BreadcrumbService) { }
+  constructor(public bcService: BreadcrumbService) {}
 
-  ngOnInit(): void {
-    this.breadcrumb$ = this.bcService.breadcrumbs$;
-  }
 }

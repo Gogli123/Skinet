@@ -10,35 +10,34 @@ namespace API.Controllers
     {
         private readonly IBasketRepository _basketRepository;
         private readonly IMapper _mapper;
-
         public BasketController(IBasketRepository basketRepository, IMapper mapper)
         {
             _mapper = mapper;
             _basketRepository = basketRepository;
         }
 
-        [HttpGet] // GET /api/basket/{id}
+        [HttpGet]
         public async Task<ActionResult<CustomerBasket>> GetBasketById(string id)
         {
-            var basket = await _basketRepository.GetBasketAsync(id); // Get the basket from Redis
+            var basket = await _basketRepository.GetBasketAsync(id);
 
-            return Ok(basket ?? new CustomerBasket(id)); // If the basket is null, return a new CustomerBasket object with the id passed in
+            return Ok(basket ?? new CustomerBasket(id));
         }
 
-        [HttpPost] // POST /api/basket
+        [HttpPost]
         public async Task<ActionResult<CustomerBasket>> UpdateBasket(CustomerBasketDto basket)
         {
-            var customerBasket = _mapper.Map<CustomerBasketDto, CustomerBasket>(basket);
+            var customerBasket = _mapper.Map<CustomerBasket>(basket);
 
-            var updatedBasket = await _basketRepository.UpdateBasketAsync(customerBasket); // Update the basket in Redis
+            var updatedBasket = await _basketRepository.UpdateBasketAsync(customerBasket);
 
             return Ok(updatedBasket);
         }
 
-        [HttpDelete] // DELETE /api/basket/{id}
-        public async Task DeleteBasket(string id)
+        [HttpDelete]
+        public async Task DeleteBasketAsync(string id)
         {
-            await _basketRepository.DeleteBasketAsync(id); // Delete the basket from Redis
-        }  
+            await _basketRepository.DeleteBasketAsync(id);
+        }
     }
 }

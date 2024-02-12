@@ -1,5 +1,4 @@
 using Microsoft.OpenApi.Models;
-using Microsoft.VisualBasic;
 
 namespace API.Extensions
 {
@@ -7,26 +6,36 @@ namespace API.Extensions
     {
         public static IServiceCollection AddSwaggerDocumentation(this IServiceCollection services)
         {
-            services.AddSwaggerGen(c =>
+            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            services.AddEndpointsApiExplorer();
+            services.AddSwaggerGen(c => 
             {
-                var securityScheme = new OpenApiSecurityScheme
+                var securitySchema = new OpenApiSecurityScheme
                 {
                     Description = "JWT Auth Bearer Scheme",
-                    Name = "Authorization",
+                    Name = "Authorisation",
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.Http,
-                    Scheme = "bearer",
+                    Scheme = "Bearer",
                     Reference = new OpenApiReference
                     {
                         Type = ReferenceType.SecurityScheme,
                         Id = "Bearer"
                     }
                 };
-                c.AddSecurityDefinition("Bearer", securityScheme);
-                var securityRequirement = new OpenApiSecurityRequirement{{securityScheme, new [] {"Bearer"}}};
-                c.AddSecurityRequirement(securityRequirement);
-            });
 
+                c.AddSecurityDefinition("Bearer", securitySchema);
+
+                var securityRequirement = new OpenApiSecurityRequirement
+                {
+                    {
+                        securitySchema, new[] {"Bearer"}
+                    }
+                };
+
+                c.AddSecurityRequirement(securityRequirement);
+                
+            });
             return services;
         }
 

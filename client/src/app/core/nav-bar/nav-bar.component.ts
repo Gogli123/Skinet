@@ -1,29 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { BasketService } from '../../basket/basket.service';
-import { Observable } from 'rxjs';
-import { IBasket } from '../../shared/models/basket';
-import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
-import { IUser } from '../../shared/models/user';
+import { Component } from '@angular/core';
 import { AccountService } from '../../account/account.service';
+import { BasketService } from '../../basket/basket.service';
+import { BasketItem } from '../../shared/models/basket';
 
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
-  styleUrl: './nav-bar.component.scss'
+  styleUrls: ['./nav-bar.component.scss']
 })
-export class NavBarComponent implements OnInit{
-  basket$: Observable<IBasket>;
-  currentUser$: Observable<IUser>;
+export class NavBarComponent {
 
-  constructor(private basketService: BasketService, private accountServcie: AccountService) { }
+  constructor(public basketService: BasketService, public accountService: AccountService) {}
 
-  ngOnInit(): void {
-    this.basket$ = this.basketService.basket$;
-    this.currentUser$ = this.accountServcie.currentUser$;
-  }
-
-  logout(){
-    this.accountServcie.logout();
+  getCount(items: BasketItem[]) {
+    return items.reduce((sum, item) => sum + item.quantity, 0);
   }
 
 }

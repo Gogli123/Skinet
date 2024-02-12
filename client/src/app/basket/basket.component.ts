@@ -1,31 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { IBasket, IBasketItem } from '../shared/models/basket';
+import { Component } from '@angular/core';
+import { BasketItem } from '../shared/models/basket';
 import { BasketService } from './basket.service';
 
 @Component({
   selector: 'app-basket',
   templateUrl: './basket.component.html',
-  styleUrl: './basket.component.scss'
+  styleUrls: ['./basket.component.scss']
 })
-export class BasketComponent implements OnInit {
-  basket$: Observable<IBasket>;
+export class BasketComponent {
 
-  constructor(private basketService: BasketService) { }
+  constructor(public basketService: BasketService) {}
 
-  ngOnInit(): void {
-    this.basket$ = this.basketService.basket$;
+  incrementQuantity(item: BasketItem) {
+    this.basketService.addItemToBasket(item);
   }
 
-  removeBasketItem(item: IBasketItem){
-    this.basketService.removeItemFromBasket(item);
+  removeItem(event: {id: number, quantity: number}) {
+    this.basketService.removeItemFromBasket(event.id, event.quantity);
   }
 
-  incrementItemQuantity(item: IBasketItem){
-    this.basketService.incrementItemQuantity(item);
-  }
-
-  decrementItemQuantity(item: IBasketItem){
-    this.basketService.decrementItemQuantity(item);
-  }
 }

@@ -1,23 +1,18 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { IProduct } from '../../shared/models/product';
+import { Component, Input } from '@angular/core';
 import { BasketService } from '../../basket/basket.service';
+import { Product } from '../../shared/models/product';
 
 @Component({
   selector: 'app-product-item',
   templateUrl: './product-item.component.html',
-  styleUrl: './product-item.component.scss'
+  styleUrls: ['./product-item.component.scss']
 })
-export class ProductItemComponent implements OnInit{
-  @Input() product: IProduct;
+export class ProductItemComponent {
+  @Input() product?: Product;
 
-  constructor(private basketService: BasketService) {
-  }
-
-  ngOnInit(): void {
-    
-  }
+  constructor(private basketService: BasketService) {}
 
   addItemToBasket() {
-    this.basketService.addItemToBasket(this.product);
+    this.product && this.basketService.addItemToBasket(this.product);
   }
 }
